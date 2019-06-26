@@ -11,6 +11,7 @@
 #include "SysInit.h"
 #include "stdio.h"
 #include "Sem.h"
+#include "STDIO.H"
 
 extern int userMain(int argc, char* argv[]);
 
@@ -45,7 +46,6 @@ int main(int argc,char * argv[]) {
 	user->start();
 	int result = user->retResult();
 	delete user;
-
 	SysRestore();
 	printf("REZULTAT %d",result);
 	return result;

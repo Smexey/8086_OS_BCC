@@ -21,11 +21,21 @@ void SysInit() {
 	PCB::idle = new PCB(500, 1);
 	PCB* mainPCB = new PCB();
 	PCB::running = mainPCB;
+	PCB::mainpcb = mainPCB;
 }
 
 void SysRestore() {
 #ifndef BCC_BLOCK_IGNORE
-	asm cli;
+	asm{
+			cli
+			in      al, 61h         //; Send acknowledgment without
+			or      al, 10000000b   //;   modifying the other bits.
+			out     61h, al         //;
+			and     al, 01111111b   //;
+			out     61h, al         //;
+			mov     al, 20h         //; Send End-of-Interrupt signal
+			out     20h, al         //;
+		}
 	setvect(TimerRoutine, oldTimerRoutine);
 	asm sti;
 #endif

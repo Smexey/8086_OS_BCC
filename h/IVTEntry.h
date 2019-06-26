@@ -29,15 +29,7 @@ public:
 };
 
 
-#define PREPAREENTRY(intNo, callOld) \
-void interrupt newInt##intNo(...); \
-IVTEntry newEntry##intNo(intNo, newInt##intNo); \
-void interrupt newInt##intNo(...) { \
-	if (callOld) { \
-		newEntry##intNo.callOldInt(); \
-	} \
-	newEntry##intNo.signal(); \
-}
+
 
 
 #endif /* H_IVTENTRY_H_ */

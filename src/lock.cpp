@@ -10,7 +10,6 @@ void lock(){
 }
 
 void unlock(){
-
 	--lockFlag;
 	if(requestedDispatch && !lockFlag) dispatch();
 }

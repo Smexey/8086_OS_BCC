@@ -8,9 +8,9 @@
 #ifndef OS_H_CONST_H_
 #define OS_H_CONST_H_
 
-#define lockcout() { asm pushf; asm cli; }
-#define unlockcout() { asm popf; }
 
+#define unlockintinsideint() { asm pushf; asm sti;}
+#define lockintinsideint(){ asm popf;}
 
 #define TimerRoutine 0x0008
 
@@ -27,8 +27,5 @@ typedef void interrupt (*InterruptRoutine)(...);
 #define unlocki() { asm popf; }
 
 //makro prepentry
-
-
-
 
 #endif /* OS_H_CONST_H_ */

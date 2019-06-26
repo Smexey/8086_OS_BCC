@@ -7,6 +7,7 @@
 
 #include "Sem.h"
 #include "KSem.h"
+#include "STDIO.H"
 
 Semaphore::Semaphore(int init) {
 	myImpl = new KernelSem(init);

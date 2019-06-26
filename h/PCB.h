@@ -30,12 +30,14 @@ public:
 	Queue waiting;
 	int wasunblocked;//za onaj wait return boze sacuvaj
 
+
 	//functions
 	PCB(StackSize stacksz,Time ts,Thread * mythr);
 	PCB(StackSize stacksz,Time ts);//za idle thread
 	PCB();
 	void startPCB();
 	void waitToComplete();
+	void handlesignals();
 
 	//statics
 
@@ -45,8 +47,9 @@ public:
 
 	static PCB* running;
 	static PCB* idle;
-
-	static void wrapper();
+	static PCB* mainpcb;
+	static int kernelprivileges;
+	static void wrapper(Thread * my);
 	static void idlewrapper();
 };
 

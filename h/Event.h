@@ -10,7 +10,7 @@
 
 // File: event.h
 #include "const.h"
-
+#include "IVTEntry.h"
 typedef unsigned char IVTNo;
 class KernelEv;
 
@@ -26,6 +26,14 @@ private:
 	KernelEv* myImpl;
 };
 
-
+#define PREPAREENTRY(intNo, callOld) \
+void interrupt newInt##intNo(...); \
+IVTEntry newEntry##intNo(intNo, newInt##intNo); \
+void interrupt newInt##intNo(...) { \
+	if (callOld) { \
+		newEntry##intNo.callOldInt(); \
+	} \
+	newEntry##intNo.signal(); \
+}
 
 #endif /* H_EVENT_H_ */

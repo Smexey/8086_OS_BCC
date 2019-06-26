@@ -48,11 +48,9 @@ void KernelEv::wait() {
 
 	// ako je running caller moze uopste da se waituj
 	if (PCB::running == caller) {
-
 		sem = 0;
 		caller->isworking = 0; //nece uci u scheduler
 		dispatch();
-
 	}
 
 }

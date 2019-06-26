@@ -54,6 +54,7 @@ int KernelSem::wait(Time t) {
 		dispatch();
 		lock();
 
+
 //		lock();
 //		cout << "izasao iz sleepa" << PCB::running->id << endl;
 //		unlock();

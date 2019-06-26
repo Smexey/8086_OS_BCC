@@ -33,7 +33,7 @@ void interrupt Timer(...) {
 	}
 
 	// Promena konteksta ako je nit gotova ili ako je zatrazena
-	if ((PCB::running->timeslice <= TimeCount) || requestedDispatch) {
+	if (((PCB::running->timeslice <= TimeCount)&&(PCB::running->timeslice)) || requestedDispatch) {
 		if (!lockFlag) {
 
 #ifndef BCC_BLOCK_IGNORE
@@ -49,19 +49,20 @@ void interrupt Timer(...) {
 			PCB::running->ss = ssReg;
 
 			//stavlja nazad u scheduler ako nije idle i ako treba da radi
-			if (PCB::running != PCB::idle && PCB::running->isworking != 0) {
-
+			if (PCB::running != PCB::idle && PCB::running->isworking == 1) {
 				Scheduler::put(PCB::running);
 			}
 
 			PCB::running = Scheduler::get();
-//			locki();
-//			cout<<"running swap u:"<<PCB::running->id<<endl;
-//			unlocki();
 
 			//ako je prazan onda je idle
-			if (PCB::running == 0)
+			if (PCB::running == 0){
 				PCB::running = PCB::idle;
+//				printf("idle ");
+			}
+//			locki();
+//			cout << "running swap u:" << PCB::running->id << endl;
+//			unlocki();
 
 			//kod za signale ide ovde???
 			spReg = PCB::running->sp;
@@ -81,9 +82,17 @@ void interrupt Timer(...) {
 			} else
 				TimeCount = 0;
 
+			//ako se promeni kontekst handle signale
+			if (PCB::running != PCB::idle && PCB::running != PCB::mainpcb) {
+				PCB::running->handlesignals();
+//				printf("vratio se iz handlesignals ");
+			}
+
+
 		} else {
 			requestedDispatch = 1;
 		}
+
 	}
 
 }
